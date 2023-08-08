@@ -67,15 +67,17 @@ function checkAnswer(currentLevel){ //function called checkAnswer(), it should t
     } else {
         console.log("wrong");
 
-        playSound("wrong");
+        playSound("wrong"); // sound wrong
 
-        $("body").addClass("game-over");
+        $("body").addClass("game-over"); // add class game over when the user failed
 
-        setTimeout(function () {
+        setTimeout(function () { // change the class to the original body
             $("body").removeClass("game-over");
         }, 200);
         
-        $("level-title").text("Game over, Press Any Key to Restart")
+        $("#level-title").text("Game over, Press Any Key to Restart"); // Change de thext to the game over
+
+        startOver(); //restart everything
     }
 }
 
@@ -87,11 +89,18 @@ function playSound(name) {
 }
 
 function animatePress(currentColour){
-    //Use jQuery to add this pressed class to the button that gets clicked inside animatePress().
+    // Use jQuery to add this pressed class to the button that gets clicked inside animatePress().
     $("#" + currentColour).addClass("pressed");
 
-    //To figure out how you can use Javascript to remove the pressed class after a 100 milliseconds.
+    // To figure out how you can use Javascript to remove the pressed class after a 100 milliseconds.
     setTimeout(function () {
         $("#" + currentColour).removeClass("pressed");
     }, 100);
+}
+
+function startOver(){
+    // Inside this function, you'll need to reset the values of level, gamePattern and started variables.
+    level = 0;
+    gamePattern = [];
+    started = false;
 }
