@@ -3,8 +3,25 @@ var buttonColours = ["red", "blue", "green", "yellow"];
 
 var gamePattern = []; //here the pattern of that game is saved
 
-//At the top of the game.js file, create a new empty array with the name userClickedPattern.
-var userClickedPattern = [];
+
+var userClickedPattern = []; //At the top of the game.js file, create a new empty array with the name userClickedPattern.
+
+// You'll need a way to keep track of whether if the game has started or not, so you only call nextSequence() on the first keypress.
+var started = false;
+
+// Create a new variable called level and start at level 0.
+var level = 0;
+
+// Use jQuery to detect when a keyboard key has been pressed, when that happens for the first time, call nextSequence().
+$(document).keypress(function() {
+    if (!started) {
+
+        //The h1 title starts out saying "Press A Key to Start", when the game has started, change this to say "Level 0".
+        $("#level-title").text("Level " + level);
+        nextSequence();
+        started = true;
+    }
+});
 
 //Use jQuery to detect when any of the buttons are clicked and trigger a handler function.
 $(".btn").click(function() {
@@ -19,7 +36,7 @@ $(".btn").click(function() {
 
     //In the same way we played sound in nextSequence() , when a user clicks on a button, the corresponding sound should be played.
     playSound(userChosenColour);
-
+    //Change the class on CSS   
     animatePress(userChosenColour);
 
 });
@@ -36,11 +53,31 @@ function nextSequence() {
 
     // Refactor the code in playSound() so that it will work for both playing sound in nextSequence() and when the user clicks a button.
     playSound(randomChosenColour);
-
+    // Call checkAnswer() after a user has clicked and chosen their answer, passing in the index of the last answer in the user's sequence
+    checkAnswer(userClickedPattern.length - 1)
     
 }
 
-///function called playSound() that takes a single input parameter called name.
+function checkAnswer(currentLevel){ //function called checkAnswer(), it should take one input with the name currentLevel
+    // Write an if statement inside checkAnswer() to check if the most recent user answer is the same as the game pattern. If so then log "success", otherwise log "wrong".
+    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+
+        console.log("success");
+
+        // If the user got the most recent answer right in step 3, then check that they have finished their sequence with another if statement.
+        if (userClickedPattern.length === gamePattern.length){
+
+        // Call nextSequence() after a 1000 millisecond delay.
+        setTimeout(function () {
+            nextSequence();
+        }, 1000);
+
+        }
+    } else {
+        console.log("wrong");
+    }
+}
+
 function playSound(name) {
 
     //Take the code we used to play sound in the nextSequence() function and add it to playSound().
